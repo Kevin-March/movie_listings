@@ -11,9 +11,9 @@ export default function Navbar() {
     router.replace("/login");
   };
 
-  console.log("Current Pathname:", pathname);
-  console.log("Is Logged In:", isLoggedIn);
-  console.log("User Info:", user);
+  //console.log("Current Pathname:", pathname);
+  //console.log("Is Logged In:", isLoggedIn);
+  //console.log("User Info:", user);
 
   return (
     <header className="navbar bg-base-200 px-6 py-4 ">
