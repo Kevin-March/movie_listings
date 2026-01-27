@@ -11,6 +11,13 @@ function calculateRating(likes: number, dislikes: number) {
   if (total === 0) return "0.0";
   return ((likes / total) * 10).toFixed(1);
 }
+function calculateCriticScore(likes: number) {
+  if (likes >= 10) return 5;
+  if (likes >= 7) return 4;
+  if (likes >= 4) return 3;
+  if (likes >= 2) return 2;
+  return 1;
+}
 
 export default async function MovieDetailPage({ params }: PageProps) {
   const { id } = await params; // 👈 CLAVE
@@ -48,18 +55,39 @@ export default async function MovieDetailPage({ params }: PageProps) {
 
       <section>
         <h2 className="text-2xl font-bold mb-4">
-          Comentarios ({commentsData.comments.length})
+          Críticas ({commentsData.comments.length})
         </h2>
 
-        <div className="space-y-4">
-          {commentsData.comments.map((comment: any) => (
-            <div key={comment.id} className="p-4 bg-base-200 rounded-lg">
-              <p className="text-sm mb-2">{comment.body}</p>
-              <span className="text-xs opacity-60">
-                — {comment.user.username}
-              </span>
-            </div>
-          ))}
+        <div className="space-y-6">
+          {commentsData.comments
+            .sort((a: any, b: any) => b.likes - a.likes) // 👈 más relevantes primero
+            .map((comment: any) => {
+              const score = calculateCriticScore(comment.likes);
+
+              return (
+                <div key={comment.id} className="p-5 bg-base-200 rounded-xl">
+                  {/* Score */}
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="text-yellow-400 text-sm">
+                      {"★".repeat(score)}
+                      {"☆".repeat(5 - score)}
+                    </div>
+
+                    <span className="text-xs opacity-60">
+                      👍 {comment.likes}
+                    </span>
+                  </div>
+
+                  {/* Body */}
+                  <p className="text-sm mb-3">“{comment.body}”</p>
+
+                  {/* User */}
+                  <span className="text-xs opacity-60">
+                    — {comment.user.fullName}
+                  </span>
+                </div>
+              );
+            })}
         </div>
       </section>
     </div>
