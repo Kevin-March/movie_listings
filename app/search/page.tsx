@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getMovieSearch, Movie } from "@/services/movie";
 import SkeletonSearch from "@/components/SkeletonSearch";
+import { ThumbsUp, ThumbsDown, Eye } from "lucide-react";
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
@@ -22,7 +23,7 @@ export default function SearchPage() {
   }, [query]);
 
   return (
-    <div className="p-6">
+    <div className="p-6" data-theme="luxury">
       <h2 className="text-2xl font-bold mb-6">
         Results for: <span className="text-primary">{query}</span>
       </h2>
@@ -57,9 +58,20 @@ export default function SearchPage() {
             {/* Stats + acción */}
             <div className="flex items-center justify-between mt-3 text-xs opacity-70">
               <div className="flex gap-4">
-                <span>👍 {post.reactions.likes}</span>
-                <span>👎 {post.reactions.dislikes}</span>
-                <span>👁️ {post.views}</span>
+                <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-1">
+                    <ThumbsUp className="w-4 h-4 text-primary" />
+                    <span>{post.reactions.likes}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <ThumbsDown className="w-4 h-4 text-error" />
+                    <span>{post.reactions.dislikes}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Eye className="w-4 h-4 text-base-content" />
+                  <span>{post.views}</span>
+                </div>
               </div>
 
               <a href={`/movie/${post.id}`} className="btn btn-xs btn-primary">

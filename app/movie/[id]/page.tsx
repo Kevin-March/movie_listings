@@ -7,6 +7,8 @@ import { createComment, editComment, deleteComment } from "@/services/comment";
 import CommentModal from "@/components/CommentModal";
 import { useAuth } from "@/app/context/AuthContext";
 import DeleteModal from "@/components/DeleteModal";
+import { ThumbsUp, ThumbsDown, Eye } from "lucide-react";
+import SkeletonMovie from "@/components/SkeletonMovie";
 
 type Comment = {
   id: number;
@@ -56,7 +58,7 @@ export default function MovieDetailPage() {
     fetchData();
   }, [movieId]);
 
-  if (!movie) return <p>Cargando...</p>;
+  if (!movie) return <SkeletonMovie />;
 
   const calculateRating = (likes: number, dislikes: number) => {
     const total = likes + dislikes;
@@ -143,13 +145,28 @@ export default function MovieDetailPage() {
   );
 
   return (
-    <div className="min-h-screen px-6 py-10 max-w-4xl mx-auto">
+    <div
+      className="min-h-screen px-6 py-10 max-w-4xl mx-auto"
+      data-theme="luxury"
+    >
       <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>
 
       <div className="flex gap-6 text-sm opacity-80 mb-6">
-        <span>⭐ {rating}</span>
-        <span>👁 {movie.views}</span>
-        <span>👤 Autor ID: {movie.userId}</span>
+        <div className="flex gap-2 items-center">
+          <div className="flex items-center gap-1">
+            <ThumbsUp className="w-4 h-4 text-primary" />
+            <span>{movie.reactions.likes}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <ThumbsDown className="w-4 h-4 text-error" />
+            <span>{movie.reactions.dislikes}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1">
+          <Eye className="w-4 h-4 text-base-content" />
+          <span>{movie.views}</span>
+        </div>
       </div>
 
       <p className="text-lg leading-relaxed mb-8">{movie.body}</p>
@@ -189,7 +206,10 @@ export default function MovieDetailPage() {
                       {"★".repeat(score)}
                       {"☆".repeat(5 - score)}
                     </div>
-                    <span className="text-xs opacity-60">👍 {c.likes}</span>
+                    <div className="flex items-center gap-1">
+                      <ThumbsUp className="w-4 h-4 text-primary" />
+                      <span className="text-xs opacity-60">{c.likes}</span>
+                    </div>
                   </div>
                   <p className="text-sm mb-3">“{c.body}”</p>
                   <div className="flex justify-between items-center">

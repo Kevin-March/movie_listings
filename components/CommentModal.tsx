@@ -27,8 +27,8 @@ export default function CommentModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-base-100 rounded-lg w-full max-w-md p-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+      <div className="bg-base-100 rounded-lg w-full max-w-md p-6 shadow-2xl border border-base-300">
         <h2 className="text-xl font-bold mb-4">{title}</h2>
 
         <textarea

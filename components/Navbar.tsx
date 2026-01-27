@@ -25,7 +25,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="navbar bg-base-200 px-6 py-4">
+    <header className="navbar bg-base-200 px-6 py-4" data-theme="luxury">
       <div className="flex-1">
         <h1
           className="text-2xl font-bold text-primary cursor-pointer"

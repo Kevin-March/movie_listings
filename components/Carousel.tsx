@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Movie } from "@/services/movie";
 import { MovieModal } from "./MovieModal";
+import { Eye } from "lucide-react";
 
 function calculateRating(likes: number, dislikes: number) {
   const total = likes + dislikes;
@@ -43,8 +44,11 @@ export function MovieCarousel({ movies }: { movies: Movie[] }) {
                   </p>
 
                   <div className="flex justify-between text-sm mt-2">
-                    <span>⭐ {rating}</span>
-                    <span>👁 {movie.views}</span>
+                    <span>★ {rating}</span>
+                    <div className="flex items-center gap-1">
+                      <Eye className="w-4 h-4 text-base-content" />
+                      <span>{movie.views}</span>
+                    </div>
                   </div>
                 </div>
               </div>

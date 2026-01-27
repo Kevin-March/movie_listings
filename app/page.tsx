@@ -10,7 +10,10 @@ export default async function HomePage() {
   ]);
 
   return (
-    <div className="min-h-screen bg-base-100 text-base-content px-6 py-10">
+    <div
+      className="min-h-screen bg-base-100 text-base-content px-6 py-10"
+      data-theme="luxury"
+    >
       {/* Hero */}
       <div className="text-center space-y-6 mb-16">
         <h1 className="text-5xl font-bold">
@@ -51,7 +54,7 @@ export default async function HomePage() {
           href="/movies"
           className="text-lg font-semibold underline hover:text-primary"
         >
-          Ver más
+          Ver más...
         </Link>
       </div>
     </div>

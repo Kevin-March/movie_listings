@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { Movie } from "@/services/movie";
+import { Eye } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Props {
   movie: Movie | null;
@@ -16,15 +17,19 @@ function calculateRating(likes: number, dislikes: number) {
 
 export function MovieModal({ movie, onClose }: Props) {
   if (!movie) return null;
+  const router = useRouter();
 
   const rating = calculateRating(
     movie.reactions.likes,
     movie.reactions.dislikes,
   );
-
+  const handleClick = () => {
+    onClose(); // cerrar modal o drawer
+    router.push(`/movie/${movie.id}`); // navegar a la película
+  };
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4">
-      <div className="bg-base-100 rounded-xl max-w-lg w-full p-6 relative">
+      <div className="bg-base-100 rounded-xl max-w-lg w-full p-6 relative shadow-2xl border border-base-300">
         <button
           onClick={onClose}
           className="absolute right-4 top-4 text-xl opacity-60 hover:opacity-100"
@@ -37,8 +42,11 @@ export function MovieModal({ movie, onClose }: Props) {
         <p className="text-sm opacity-80 mb-4">{movie.body}</p>
 
         <div className="flex justify-between text-sm mb-4">
-          <span>⭐ {rating}</span>
-          <span>👁 {movie.views}</span>
+          <span>★ {rating}</span>
+          <div className="flex items-center gap-1">
+            <Eye className="w-4 h-4 text-base-content" />
+            <span>{movie.views}</span>
+          </div>
         </div>
 
         <div className="flex items-center justify-between">
@@ -49,14 +57,9 @@ export function MovieModal({ movie, onClose }: Props) {
               </span>
             ))}
           </div>
-
-          <Link
-            href={`/movie/${movie.id}`}
-            className="text-sm font-semibold underline hover:text-primary"
-            onClick={onClose}
-          >
+          <button onClick={handleClick} className="btn btn-sm btn-primary">
             Ver comentarios
-          </Link>
+          </button>
         </div>
       </div>
     </div>

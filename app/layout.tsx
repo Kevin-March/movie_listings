@@ -13,6 +13,9 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "Prueba TDP",
   description: "Creado por Kevin March",
+  icons: {
+    icon: "/movie.ico",
+  },
 };
 
 export default function RootLayout({
@@ -25,7 +28,9 @@ export default function RootLayout({
       <body className="min-h-screen bg-base-100 text-base-content">
         <AuthProvider>
           <Navbar />
-          <main>{children}</main>
+          <main>
+            <div className="px-8 mx-auto">{children}</div>
+          </main>
         </AuthProvider>
       </body>
     </html>
