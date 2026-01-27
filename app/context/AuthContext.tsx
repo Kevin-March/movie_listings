@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { login as loginService } from "@/services/login";
 
@@ -18,6 +18,7 @@ type AuthContextType = {
   isLoggedIn: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -71,7 +72,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     router.replace("/");
   };
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, login: Login, logout }}>
+    <AuthContext.Provider
+      value={{ user, isLoggedIn, login: Login, logout, setUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
