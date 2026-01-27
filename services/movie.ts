@@ -78,4 +78,18 @@ export async function getMovieComments(id: number) {
   return res.json();
 }
 
+export async function getMovieSearch(query: string): Promise<MoviesResponse> {
+  const res = await fetch(
+    `https://dummyjson.com/posts/search?q=${encodeURIComponent(query)}`,
+    {
+      cache: "no-store",
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error("Error fetching movie search");
+  }
+
+  return res.json();
+}
 export type { Movie };

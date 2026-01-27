@@ -2,15 +2,21 @@
 
 import { useAuth } from "@/app/context/AuthContext";
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const { user, isLoggedIn, logout } = useAuth();
+  const [query, setQuery] = useState("");
   const handleLogin = () => {
     router.replace("/login");
   };
-
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && query.trim()) {
+      router.push(`/search?q=${encodeURIComponent(query)}`);
+    }
+  };
   //console.log("Current Pathname:", pathname);
   //console.log("Is Logged In:", isLoggedIn);
   //console.log("User Info:", user);
@@ -30,6 +36,9 @@ export default function Navbar() {
           type="text"
           placeholder="Search movies, series..."
           className="input input-bordered w-64"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleSearch}
         />
 
         {!isLoggedIn ? (
