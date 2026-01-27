@@ -15,7 +15,6 @@ export default async function HomePage() {
       className="min-h-screen bg-base-100 text-base-content px-6 py-10"
       data-theme="luxury"
     >
-      {/* Hero */}
       <div className="text-center space-y-6 mb-16">
         <h1 className="text-5xl font-bold">
           Descubre que películas son tendencia global
@@ -31,7 +30,6 @@ export default async function HomePage() {
         </Link>
       </div>
 
-      {/* Carousels */}
       <section className="space-y-20">
         <div>
           <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
@@ -58,7 +56,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Bottom Explore */}
       <div className="text-center mt-24">
         <Link
           href="/movies"

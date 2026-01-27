@@ -8,7 +8,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const { user, isLoggedIn, logout } = useAuth();
   const [query, setQuery] = useState("");
-  const [mounted, setMounted] = useState(false); // ✅
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true); // Solo renderizamos después de montar en cliente

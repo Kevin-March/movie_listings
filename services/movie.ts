@@ -32,8 +32,6 @@ export async function getMovies({
     throw new Error("Failed to fetch movies");
   }
   const data = await response.json();
-
-  console.log("Movies data:", data);
   return data.posts;
 }
 

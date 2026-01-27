@@ -24,8 +24,8 @@ export function MovieModal({ movie, onClose }: Props) {
     movie.reactions.dislikes,
   );
   const handleClick = () => {
-    onClose(); // cerrar modal o drawer
-    router.push(`/movie/${movie.id}`); // navegar a la película
+    onClose();
+    router.push(`/movie/${movie.id}`);
   };
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4">

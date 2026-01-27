@@ -8,7 +8,7 @@ import ProfileSkeleton from "@/components/SkeletonProfile";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, isLoggedIn, setUser } = useAuth(); // agregamos setUser para actualizar context
+  const { user, isLoggedIn, setUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -38,7 +38,6 @@ export default function ProfilePage() {
           username: data.username || "",
         });
 
-        // Actualizamos AuthContext con los datos del endpoint
         setUser({
           ...user,
           ...data,
@@ -61,10 +60,8 @@ export default function ProfilePage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Datos actualizados localmente:", formData);
     alert("Datos actualizados localmente (no persistentes)");
 
-    // Guardamos cambios en AuthContext y localStorage
     setUser((prev: any) => ({ ...prev, ...formData }));
     localStorage.setItem("user", JSON.stringify({ ...user, ...formData }));
   };
@@ -74,7 +71,6 @@ export default function ProfilePage() {
   return (
     <div className="flex justify-center mt-16" data-theme="luxury">
       <div className="relative w-full max-w-xl bg-base-200 rounded-2xl shadow-xl border border-base-300 pt-16 px-6 pb-8">
-        {/* Avatar */}
         <div className="absolute -top-14 left-1/2 -translate-x-1/2">
           <div className="avatar">
             <div className="w-28 rounded-full ring ring-primary ring-offset-base-200 ring-offset-4">

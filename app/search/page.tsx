@@ -38,15 +38,12 @@ export default function SearchPage() {
             key={post.id}
             className="bg-base-100 border border-base-300 rounded-lg px-4 py-3 hover:bg-base-200 transition"
           >
-            {/* Título */}
             <h3 className="text-lg font-semibold leading-tight">
               {post.title}
             </h3>
 
-            {/* Descripción corta */}
             <p className="text-sm opacity-80 mt-1 line-clamp-2">{post.body}</p>
 
-            {/* Tags */}
             <div className="flex flex-wrap gap-1 mt-2">
               {post.tags.map((tag) => (
                 <span key={tag} className="badge badge-sm badge-outline">
@@ -54,8 +51,6 @@ export default function SearchPage() {
                 </span>
               ))}
             </div>
-
-            {/* Stats + acción */}
             <div className="flex items-center justify-between mt-3 text-xs opacity-70">
               <div className="flex gap-4">
                 <div className="flex gap-2 items-center">
