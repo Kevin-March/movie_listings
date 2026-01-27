@@ -1,33 +1,142 @@
+"use client";
+
+import { useParams } from "next/navigation";
+import { useState, useEffect } from "react";
 import { getMovieById, getMovieComments } from "@/services/movie";
+import { createComment, editComment, deleteComment } from "@/services/comment";
+import CommentModal from "@/components/CommentModal";
+import { useAuth } from "@/app/context/AuthContext";
+import DeleteModal from "@/components/DeleteModal";
 
-interface PageProps {
-  params: Promise<{
-    id: string;
-  }>;
-}
+type Comment = {
+  id: number;
+  body: string;
+  postId: number;
+  userId: number;
+  userName: string;
+  likes: number;
+};
 
-function calculateRating(likes: number, dislikes: number) {
-  const total = likes + dislikes;
-  if (total === 0) return "0.0";
-  return ((likes / total) * 10).toFixed(1);
-}
-function calculateCriticScore(likes: number) {
-  if (likes >= 10) return 5;
-  if (likes >= 7) return 4;
-  if (likes >= 4) return 3;
-  if (likes >= 2) return 2;
-  return 1;
-}
+export default function MovieDetailPage() {
+  const params = useParams();
+  const movieId = Number(params?.id);
+  const { user, isLoggedIn } = useAuth();
 
-export default async function MovieDetailPage({ params }: PageProps) {
-  const { id } = await params; // 👈 CLAVE
-  const movieId = Number(id);
+  const [movie, setMovie] = useState<any>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingComment, setEditingComment] = useState<Comment | null>(null);
 
-  const [movie, commentsData] = await Promise.all([
-    getMovieById(movieId),
-    getMovieComments(movieId),
-  ]);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteCommentId, setDeleteCommentId] = useState<number | null>(null);
 
+  // Cargar datos al montar
+  useEffect(() => {
+    async function fetchData() {
+      const [movieData, commentsData] = await Promise.all([
+        getMovieById(movieId),
+        getMovieComments(movieId),
+      ]);
+
+      setMovie(movieData);
+
+      // Mapeamos para unificar la propiedad userName
+      const mappedComments = commentsData.comments.map((c: any) => ({
+        id: c.id,
+        body: c.body,
+        postId: c.postId,
+        userId: c.user.id,
+        userName: c.user?.fullName || "Desconocido",
+        likes: c.likes,
+      }));
+
+      setComments(mappedComments);
+    }
+
+    fetchData();
+  }, [movieId]);
+
+  if (!movie) return <p>Cargando...</p>;
+
+  const calculateRating = (likes: number, dislikes: number) => {
+    const total = likes + dislikes;
+    if (total === 0) return "0.0";
+    return ((likes / total) * 10).toFixed(1);
+  };
+
+  const calculateCriticScore = (likes: number) => {
+    if (likes >= 10) return 5;
+    if (likes >= 7) return 4;
+    if (likes >= 4) return 3;
+    if (likes >= 2) return 2;
+    return 1;
+  };
+
+  // Abrir modal para crear o editar comentario
+  const handleOpenModal = (comment?: Comment) => {
+    setEditingComment(comment || null);
+    setIsModalOpen(true);
+  };
+
+  // Crear o editar comentario
+  const handleSubmit = async (body: string) => {
+    if (!user) return;
+
+    if (editingComment) {
+      // Editar comentario
+      const updatedComment: Comment = { ...editingComment, body };
+      setComments((prev) =>
+        prev.map((c) => (c.id === editingComment.id ? updatedComment : c)),
+      );
+      setEditingComment(null);
+      setIsModalOpen(false);
+
+      try {
+        await editComment(editingComment.id, body);
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      // Crear comentario
+      const newComment: Comment = {
+        id: Date.now(), // Temporal
+        body,
+        postId: movieId,
+        userId: user.id,
+        userName: `${user.firstName} ${user.lastName}`,
+        likes: 0,
+      };
+
+      // Agregar al final de la lista (o al inicio si querés los más recientes arriba)
+      setComments((prev) => [...prev, newComment]);
+      setIsModalOpen(false);
+
+      try {
+        await createComment({ body, postId: movieId, userId: user.id });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+  const handleOpenDeleteModal = (id: number) => {
+    setDeleteCommentId(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteCommentId === null) return;
+
+    setComments((prev) => prev.filter((c) => c.id !== deleteCommentId));
+
+    try {
+      await deleteComment(deleteCommentId);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsDeleteModalOpen(false);
+      setDeleteCommentId(null);
+    }
+  };
   const rating = calculateRating(
     movie.reactions.likes,
     movie.reactions.dislikes,
@@ -53,43 +162,77 @@ export default async function MovieDetailPage({ params }: PageProps) {
         ))}
       </div>
 
+      {/* Sección de Críticas */}
       <section>
-        <h2 className="text-2xl font-bold mb-4">
-          Críticas ({commentsData.comments.length})
-        </h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">Críticas ({comments.length})</h2>
+
+          {isLoggedIn && (
+            <button
+              className="btn btn-primary"
+              onClick={() => handleOpenModal()}
+            >
+              Dejar comentario
+            </button>
+          )}
+        </div>
 
         <div className="space-y-6">
-          {commentsData.comments
-            .sort((a: any, b: any) => b.likes - a.likes) // 👈 más relevantes primero
-            .map((comment: any) => {
-              const score = calculateCriticScore(comment.likes);
-
+          {comments
+            .sort((a, b) => b.likes - a.likes)
+            .map((c) => {
+              const score = calculateCriticScore(c.likes);
               return (
-                <div key={comment.id} className="p-5 bg-base-200 rounded-xl">
-                  {/* Score */}
+                <div key={c.id} className="p-5 bg-base-200 rounded-xl">
                   <div className="flex items-center justify-between mb-2">
                     <div className="text-yellow-400 text-sm">
                       {"★".repeat(score)}
                       {"☆".repeat(5 - score)}
                     </div>
-
-                    <span className="text-xs opacity-60">
-                      👍 {comment.likes}
-                    </span>
+                    <span className="text-xs opacity-60">👍 {c.likes}</span>
                   </div>
+                  <p className="text-sm mb-3">“{c.body}”</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs opacity-60">— {c.userName}</span>
 
-                  {/* Body */}
-                  <p className="text-sm mb-3">“{comment.body}”</p>
-
-                  {/* User */}
-                  <span className="text-xs opacity-60">
-                    — {comment.user.fullName}
-                  </span>
+                    {user?.id === c.userId && (
+                      <div className="flex gap-2">
+                        <button
+                          className="btn btn-xs btn-outline"
+                          onClick={() => handleOpenModal(c)}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="btn btn-xs btn-error"
+                          onClick={() => handleOpenDeleteModal(c.id)}
+                        >
+                          Borrar
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             })}
         </div>
       </section>
+
+      <CommentModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setEditingComment(null);
+          setIsModalOpen(false);
+        }}
+        onSubmit={handleSubmit}
+        initialBody={editingComment?.body || ""}
+        title={editingComment ? "Editar comentario" : "Dejar comentario"}
+      />
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 }
