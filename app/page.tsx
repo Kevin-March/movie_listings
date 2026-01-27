@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { getMovies, getMoviesByTag } from "@/services/movie";
 import { MovieCarousel } from "@/components/Carousel";
+import { Flame, Flag, Rocket, Film } from "lucide-react";
 
 export default async function HomePage() {
   const [popularToday, englishMovies, fictionMovies] = await Promise.all([
-    getMovies({ limit: 5, skip: 0 }),
-    getMoviesByTag("english", 5),
-    getMoviesByTag("fiction", 5),
+    getMovies({ limit: 10, skip: 0 }),
+    getMoviesByTag("english", 10),
+    getMoviesByTag("fiction", 10),
   ]);
 
   return (
@@ -33,17 +34,26 @@ export default async function HomePage() {
       {/* Carousels */}
       <section className="space-y-20">
         <div>
-          <h2 className="text-3xl font-bold mb-6">🔥 Popular hoy</h2>
+          <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
+            <Flame className="w-7 h-7 text-primary" />
+            Popular hoy
+          </h2>
           <MovieCarousel movies={popularToday} />
         </div>
 
         <div>
-          <h2 className="text-3xl font-bold mb-6">🇺🇸 Películas en inglés</h2>
+          <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
+            <Flag className="w-7 h-7 text-primary" />
+            Películas en inglés
+          </h2>
           <MovieCarousel movies={englishMovies} />
         </div>
 
         <div>
-          <h2 className="text-3xl font-bold mb-6">🚀 Top ficción</h2>
+          <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
+            <Rocket className="w-7 h-7 text-primary" />
+            Top ficción
+          </h2>
           <MovieCarousel movies={fictionMovies} />
         </div>
       </section>
