@@ -22,8 +22,8 @@ Este proyecto es una aplicación web desarrollada como prueba tecnica para la em
 1. Clonar el repositorio:
 
 ```bash
-git clone <URL_DEL_REPOSITORIO>
-cd <NOMBRE_DEL_PROYECTO>'
+git clone https://github.com/Kevin-March/movie_listings.git
+cd movie_listings
 ```
 
 2.Instalar dependencias:
