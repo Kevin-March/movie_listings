@@ -110,3 +110,20 @@ Aunque el endpoint utilizado (`dummyjson`) no provee imágenes de portada para l
 El objetivo fue mostrar cómo debería verse la aplicación desde una perspectiva real de producto, priorizando la experiencia de usuario por sobre una representación puramente textual de los datos.
 
 En un escenario con un backend real, la intención sería implementar un feature propio para que estas películas cuenten con una imagen de portada, ya sea mediante almacenamiento interno o integración con un servicio externo.
+
+## ✨ Features implementadas
+
+### 👤 Gestión de cuenta de usuario
+
+Se implementó la funcionalidad de **visualización y edición de la cuenta del usuario**.
+
+Esta feature fue priorizada porque, tras más de **3 años de experiencia trabajando con React**, se considera una de las piezas más básicas pero a la vez más útiles en aplicaciones reales, ya que permite al usuario:
+
+- Ver su información personal
+- Editar sus datos
+- Recibir feedback inmediato de los cambios realizados
+
+Dado que el proyecto no cuenta con un backend real, los cambios realizados por el usuario se mantienen en el estado de la aplicación como un objeto persistente durante la sesión.  
+La intención fue simular un comportamiento realista sin depender de infraestructura adicional.
+
+La decisión de implementar esta feature por sobre otras (como light/dark mode) se basó en su **impacto funcional**, ya que aporta mayor valor desde el punto de vista del usuario y representa un caso de uso común en aplicaciones de producción.

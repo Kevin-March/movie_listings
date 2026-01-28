@@ -1,0 +1,57 @@
+Utilice chatgpt para cosas basicas, el mayor ejemplo fue el cambio de routas entre nextjs 16 y versiones anteriores
+
+```Formato de nextjs16 vs next13, cambios importantes y configuracion de tsconfig.json```
+seguido de algo mas basico
+```Debo cambiar al formato nuevo para el funcionamiento correcto de nextjs 16, o me puedo cambiar a la estructura vieja```
+
+Como decidi quedarme en el formato nuevo me salto el primer error al querer utilizar daisyUI
+
+```como se si se instalo correctamente daisyui. Al ejecutar npm i -D daisyui@latest, cuando meto: @plugin "daisyui"; en mi globals.css en mi proyecto me salta error:
+````Unknown at rule @plugin css(unknownAtRules)````
+```
+de ahi me explico correctamente que el error es del linter/editor, no del build. asi que continue
+
+En este punto, tenia la idea de como queria que se viera la pagina, para agilizar las cosas pedi que me haga el esqueleto de una pagina principal
+
+```hace un esqueleto de una pagina principal que  parezca imdb```
+
+De ese codigo empece a seprarar entre navbar y main body, y empece a ejecutar los features, trabajo asi porque me gusta utilizar a chatgpt para agilizar cosas pequenhas, luego yo le voy dando los detalles.
+
+luego de esto, casi no necesite usar IA hasta que me salto un error haciendo el login:
+``` explica el siguiente error:
+````login:1 Access to fetch at 'https://dummyjson.com/auth/login' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.````
+
+```
+
+ahi entendi que era mi llamada al endpoint, como fui directo a buscar desde la pagina de dummyjson me olvide que las politicas CORS ususalmente no habilitan llamadas de localhost. Chatgpt me explico rapido como solucionarlo ycontinue.
+
+luego al estar terminando mi navbar me salto el error:
+````“Hydration failed because the server rendered HTML didn’t match the client.”```` pedi a chatgpt que me explicara detalladamente el error porque era la primera vez que me pasaba en un proyecto y queria entender el error:
+```Explica detalladamente el siguiente error, como ocurre y como se soluciona:
+````“Hydration failed because the server rendered HTML didn’t match the client.”````
+```
+
+como queria que cada pagina tenga un skeleton loader me fui 1 x 1 pidiendo que haga este loader para darle un look mas profesional.
+
+```Haz un skeleton loader para mi main page.tsx```
+```haz un skeleton loader para mi movies page.tsx```
+```haz un skeleton loader para mi search page.tsx```
+```haz un skeleton loader para mi profile page.tsx```
+
+En lo ultimo que utilice chatgpt fu para utilizar el optimistic ui, estoy acostumbrado a tener response del backend asi que trabajar con la tarea 4 fue un problema
+
+``` Debo crear una seccion de comentarios donde no tengo backend, estas son las reglas que debe cumplir:
+````Reglas:
+• Si no está logueado: no permitir crear/editar/borrar (UI + guards).
+• Al crear comentario, mandar { body, postId, userId }.
+• Como el backend no persiste, se debe implementar estado local:
+o al crear: insertar el comentario en UI inmediatamente (optimistic UI),
+o al editar/borrar: reflejar cambios en el estado local,````
+explica detalladamente como se puede hacer esto y si necesito modificar algun endpoint ya creado dentro de mi comments```
+
+al final los endpoints no se tocaron, pero si me dejo el detalle de la pagina de /movie/id page.tsx
+deje los comentarios como estaba porque me gustaria que vieran que no miento cuando si uso chatgpt para que me escriba la mayoria del codigo. OBS: obviamente veto todo lo que dice chatgpt antes de implementarlo
+fui probando de a poco para que todo funcione.
+
+creo que el utlimo caso de usar chatgpt fue para escribir el readme, solamente para que suene mas profesional, porque se nota la diferencia de tono en este documento vs el documento de readme.
+
