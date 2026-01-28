@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎬 Movie Listings App
 
-## Getting Started
+Este proyecto es una aplicación web desarrollada como prueba tecnica para la empresa TDP
 
-First, run the development server:
+## Tecnologías utilizadas
+
+- **Next.js 14+** (App Router)
+- **React**
+- **TypeScript**
+- **Tailwind CSS**
+- **DaisyUI**
+- **Lucide Icons**
+- **Fetch API / Services layer**
+
+## Requisitos previos
+
+- **Node.js** (versión 18 o superior)
+- **npm** / **yarn** / **pnpm** / **bun**
+
+## ▶️ Instrucciones para correr el proyecto
+
+1. Clonar el repositorio:
+
+```bash
+git clone <URL_DEL_REPOSITORIO>
+cd <NOMBRE_DEL_PROYECTO>'
+```
+
+2.Instalar dependencias:
+
+```bash
+npm install
+```
+
+3- Ejecutar en modo desarollo:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4- Abrir el navegador en:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+http://localhost:3000 //default
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Si se quiere correr como produccion
 
-## Learn More
+1- generamos el build de produccion:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2- corremos localmente:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm start
+```
 
-## Deploy on Vercel
+## Credenciales de prueba:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Usuario: emilys
+Contraseña: emilyspass
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🧠 Decisiones técnicas
+
+### 📌 Elección del framework
+
+Se decidió utilizar la **última versión estable de Next.js** con App Router como un desafío personal, con el objetivo de adaptarse a los nuevos paradigmas del framework (Server Components, layouts, routing basado en archivos y separación entre componentes de cliente y servidor).  
+Esta elección permitió profundizar en las buenas prácticas actuales recomendadas por el ecosistema de Next.js.
+
+### 📌 Manejo de autenticación
+
+La autenticación se implementó mediante un **AuthContext**, siguiendo un enfoque profesional y escalable para el manejo del estado global de autenticación.
+
+Este contexto centraliza:
+
+- El estado del usuario autenticado
+- El manejo de tokens
+- Las funciones de login y logout
+- La verificación de sesión activa
+
+El uso de un contexto dedicado permite:
+
+- Evitar el prop drilling
+- Mantener una arquitectura limpia
+- Facilitar la reutilización y el mantenimiento del código
+- Alinear el proyecto con patrones comúnmente utilizados en aplicaciones reales de producción
+
+### 📌 Manejo de tokens
+
+Los tokens de autenticación se almacenan en **cookies**, lo que permite su persistencia entre recargas y su uso para validar sesiones desde el cliente.  
+El sistema verifica la existencia del token para proteger rutas y redirigir al usuario al login cuando corresponde.
+
+### 📌 Manejo de estado
+
+Para el estado local se utilizan los hooks nativos de React (`useState`, `useEffect`), manteniendo el estado lo más cercano posible a los componentes que lo consumen.  
+No se utilizaron librerías externas de manejo de estado global (Redux, Zustand, etc.) debido al alcance del proyecto.
+
+### 📌 UI y experiencia de usuario
+
+El diseño de la interfaz y la forma de presentar las películas se inspiró en plataformas existentes como **IMDB** y **Netflix**, especialmente en la manera en que recomiendan y organizan el contenido visual dentro del home.
+
+Por este motivo, la página principal prioriza:
+
+- El contenido visual
+- Tarjetas de películas
+- Una disposición orientada a exploración y descubrimiento
+
+Aunque el endpoint utilizado (`dummyjson`) no provee imágenes de portada para las películas, la decisión de incluir imágenes fue **intencional**.  
+El objetivo fue mostrar cómo debería verse la aplicación desde una perspectiva real de producto, priorizando la experiencia de usuario por sobre una representación puramente textual de los datos.
+
+En un escenario con un backend real, la intención sería implementar un feature propio para que estas películas cuenten con una imagen de portada, ya sea mediante almacenamiento interno o integración con un servicio externo.
