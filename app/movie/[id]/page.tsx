@@ -9,6 +9,8 @@ import { useAuth } from "@/app/context/AuthContext";
 import DeleteModal from "@/components/DeleteModal";
 import { ThumbsUp, ThumbsDown, Eye } from "lucide-react";
 import SkeletonMovie from "@/components/SkeletonMovie";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type Comment = {
   id: number;
@@ -23,6 +25,7 @@ export default function MovieDetailPage() {
   const params = useParams();
   const movieId = Number(params?.id);
   const { user, isLoggedIn } = useAuth();
+  const router = useRouter();
 
   const [movie, setMovie] = useState<any>(null);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -149,6 +152,13 @@ export default function MovieDetailPage() {
       className="min-h-screen px-6 py-10 max-w-4xl mx-auto"
       data-theme="luxury"
     >
+      <button
+        onClick={() => router.back()}
+        className="flex items-center gap-2 text-sm text-primary hover:underline w-fit"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Volver
+      </button>
       <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>
 
       <div className="flex gap-6 text-sm opacity-80 mb-6">

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getMovies, Movie } from "../../services/movie";
 import SkeletonCard from "@/components/SkeletonCard";
 import { useRouter } from "next/navigation";
+import { Eye, ThumbsDown, ThumbsUp, ArrowLeft } from "lucide-react";
 
 const PAGE_SIZES = [5, 10, 20, 50];
 
@@ -48,6 +49,13 @@ const MoviesPage = () => {
 
   return (
     <div className="p-6 space-y-6" data-theme="luxury">
+      <button
+        onClick={() => router.back()}
+        className="flex items-center gap-2 text-sm text-primary hover:underline w-fit"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Volver
+      </button>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold text-center sm:text-left">Movies</h1>
         <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -107,10 +115,19 @@ const MoviesPage = () => {
                   </p>
 
                   <div className="flex justify-between text-sm mt-4">
-                    <span>👁 {movie.views}</span>
+                    <div className="flex items-center gap-1">
+                      <Eye className="w-4 h-4 text-base-content" />
+                      <span>{movie.views}</span>
+                    </div>
                     <div className="flex gap-2">
-                      <span>👍 {movie.reactions.likes}</span>
-                      <span>👎 {movie.reactions.dislikes}</span>
+                      <div className="flex items-center gap-1">
+                        <ThumbsUp className="w-4 h-4 text-primary" />
+                        <span>{movie.reactions.likes}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <ThumbsDown className="w-4 h-4 text-error" />
+                        <span>{movie.reactions.dislikes}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
